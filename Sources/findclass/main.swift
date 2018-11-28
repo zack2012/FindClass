@@ -26,8 +26,8 @@ let usage = """
 [options] 类名 库所在的路径
 
 例如：
-findName UIView /path/to/Pods
-findName -d=false UIView /path/to/Binary
+findclass UIView /path/to/Pods
+findclass -d=false UIView /path/to/Binary
 """
 
 do {
