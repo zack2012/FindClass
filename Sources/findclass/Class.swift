@@ -61,8 +61,13 @@ extension Class: Hashable {
 
 extension Class: CustomStringConvertible {
     func output(_ stream: OutputByteStream, level: Int) {
-        for _ in 0 ..< level {
+        
+        for _ in stride(from: 0, to: level - 1, by: 1) {
             stream <<< "\t"
+        }
+        
+        if level > 0 {
+            stream <<< "|---"
         }
         
         if children.isEmpty {
@@ -85,6 +90,7 @@ extension Class: CustomStringConvertible {
     }
     
     func outputByFramework(_ stream: OutputByteStream) {
+        stream <<< "按framework输出: \n"
         var map = [String: [Class]]()
         
         func makeMap(map: inout [String: [Class]], clz: Class) {

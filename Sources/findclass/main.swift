@@ -9,6 +9,8 @@ import Foundation
 import Basic
 import Utility
 
+// swift build -c=release -Xswiftc -static-stdlib
+
 enum MainError: Error, CustomStringConvertible {
     case string(_ message: String)
     
@@ -33,7 +35,7 @@ do {
     let argumentParser = ArgumentParser(usage: usage, overview: "查找一个类的所有子类")
     let clzArgument = argumentParser.add(positional: "className", kind: String.self, optional: false, usage: "输入类名，区分大小写")
     let pathArgument = argumentParser.add(positional: "path", kind: String.self, optional: false, usage: "库所在的路径")
-    let isDirArgument = argumentParser.add(option: "--directory", shortName: "-d", kind: Bool.self, usage: "是否Pods文件夹路径")
+    let isDirArgument = argumentParser.add(option: "--directory", shortName: "-d", kind: Bool.self, usage: "是否是Pods文件夹路径")
     let parsedResult = try argumentParser.parse(Array(CommandLine.arguments.dropFirst()))
     
     let path = parsedResult.get(pathArgument)!
