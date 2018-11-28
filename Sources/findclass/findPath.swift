@@ -30,6 +30,7 @@ final class FindPath {
         var r = [Item]()
         
         for path in allPaths {
+            // FileManager.enumerator方法无法处理symblic link，需要提前处理
             let enumerator = fileManager.enumerator(at: URL(fileURLWithPath: path).resolvingSymlinksInPath(),
                                                             includingPropertiesForKeys: resourceKeys,
                                                             options: [.skipsHiddenFiles], errorHandler: { (url, error) -> Bool in

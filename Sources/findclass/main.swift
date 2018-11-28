@@ -48,6 +48,9 @@ do {
         let fp = FindPath(path: path)
         let paths = try fp.getResults()
         
+        stdoutStream <<< "路径查找完成, 开始解析库文件...\n"
+        stdoutStream.flush()
+        
         for item in paths {
             try parser.parse(path: item.path, frameworkName: item.frameworkName)
         }
@@ -61,7 +64,7 @@ do {
         clz.outputByFramework(stdoutStream)
         stdoutStream.flush()
     } else {
-        throw MainError.string("没有查询到该类，可能路径输入的不对或类名输入错误")
+        throw MainError.string("没有查询到该类，可能路径输入的不对、类名输入错误或没有该类")
     }
     
 } catch let error as PathValidationError {
