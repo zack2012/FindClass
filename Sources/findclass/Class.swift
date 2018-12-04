@@ -113,6 +113,29 @@ extension Class: CustomStringConvertible {
         }
     }
     
+    func outputObjecticeCDictionary(_ stream: OutputByteStream) {
+        var map = [String: Class]()
+        
+        func makeMap(map: inout [String: Class], clz: Class) {
+            map[clz.name] = clz;
+            for child in clz.children {
+                makeMap(map: &map, clz: child)
+            }
+        }
+        
+        makeMap(map: &map, clz: self)
+        
+        stream <<< "输出Objectice-C字典(\(map.keys.count)): \n"
+
+        stream <<< "@{\n"
+        let sortedKey = map.keys.sorted()
+        for key in sortedKey {
+            let clz = map[key]!
+            stream <<< "    @\"" <<< clz.name <<< "\":" <<< "@{},\n"
+        }
+        stream <<< "}\n"
+    }
+    
     private func insertClass(_ clz: Class, map: inout [String: [Class]]) {
         if let key = clz.frameworkName {
             let array = map[key]
