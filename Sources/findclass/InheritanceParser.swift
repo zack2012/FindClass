@@ -38,8 +38,9 @@ final class InheritanceParser {
             case .parsingSuper:
                 let trimmedLine = line.trimmingCharacters(in: .whitespaces)
                 if trimmedLine.hasPrefix("superclass") {
-                    let classnameStart = line.range(of: "_OBJC_CLASS_$_")!
-                     rawParentName = String(line[classnameStart.upperBound...])
+                    if let classnameStart = line.range(of: "_OBJC_CLASS_$_") {
+                        rawParentName = String(line[classnameStart.upperBound...])
+                    }
                     
                     makeClass()
                     
@@ -58,9 +59,11 @@ final class InheritanceParser {
     }
     
     private func makeClass() {
-        guard let classKey = rawClassName, let parentKey = rawParentName else {
+        guard let classKey = rawClassName else {
             return
         }
+        
+        let parentKey = rawParentName ?? ""
         
         let clz = result[classKey]
         let parent = result[parentKey]
@@ -103,6 +106,9 @@ final class InheritanceParser {
             result[classKey] = newClass
             result[parentKey] = newParentClass
         }
+        
+        // 删除没用的class
+        result[""] = nil
     }
     
     private var frameworkName: String = ""
